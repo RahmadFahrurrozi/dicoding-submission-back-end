@@ -136,7 +136,9 @@ const updateBook = (req, res) => {
     try {
       const bookIndex = books.findIndex((b) => b.id === id);
       if (bookIndex === -1) {
-        res.writeHead(404, { "Content-Type": "application/json" });
+        res.writeHead(404, {
+          "Content-Type": "application/json; charset=utf-8",
+        });
         res.end(
           JSON.stringify({
             status: "fail",
@@ -158,7 +160,9 @@ const updateBook = (req, res) => {
       } = JSON.parse(body);
 
       if (!name) {
-        res.writeHead(400, { "Content-Type": "application/json" });
+        res.writeHead(400, {
+          "Content-Type": "application/json; charset=utf-8",
+        });
         res.end(
           JSON.stringify({
             status: "fail",
@@ -169,7 +173,9 @@ const updateBook = (req, res) => {
       }
 
       if (readPage > pageCount) {
-        res.writeHead(400, { "Content-Type": "application/json" });
+        res.writeHead(400, {
+          "Content-Type": "application/json; charset=utf-8",
+        });
         res.end(
           JSON.stringify({
             status: "fail",
@@ -197,7 +203,7 @@ const updateBook = (req, res) => {
         updatedAt,
       };
 
-      res.writeHead(200, { "Content-Type": "application/json" });
+      res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
       res.end(
         JSON.stringify({
           status: "success",
@@ -205,7 +211,9 @@ const updateBook = (req, res) => {
         })
       );
     } catch (err) {
-      res.writeHead(400, { "Content-Type": "application/json" });
+      res.writeHead(400, {
+        "Content-Type": "application/json; charset=utf-8",
+      });
       res.end(
         JSON.stringify({
           status: "error",
@@ -221,7 +229,7 @@ const deleteBook = (req, res) => {
   const bookIndex = books.findIndex((b) => b.id === id);
 
   if (bookIndex === -1) {
-    res.writeHead(404, { "Content-Type": "application/json" });
+    res.writeHead(404, { "Content-Type": "application/json; charset=utf-8" });
     res.end(
       JSON.stringify({
         status: "fail",
@@ -233,7 +241,7 @@ const deleteBook = (req, res) => {
 
   books.splice(bookIndex, 1);
 
-  res.writeHead(200, { "Content-Type": "application/json" });
+  res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
   res.end(
     JSON.stringify({ status: "success", message: "Buku berhasil dihapus" })
   );
