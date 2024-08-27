@@ -127,13 +127,25 @@ const getBookById = (req, res) => {
 
 const updateBook = (req, res) => {
   const id = req.url.split("/")[2];
-  let body = "";
+  let body = [];
   req.on("data", (chunk) => {
     body += chunk.toString();
   });
 
   req.on("end", () => {
     try {
+      const {
+        name,
+        year,
+        author,
+        summary,
+        publisher,
+        pageCount,
+        readPage,
+        reading,
+      } = JSON.parse(body);
+
+      // Check if the book exists
       const bookIndex = books.findIndex((b) => b.id === id);
       if (bookIndex === -1) {
         res.writeHead(404, {
@@ -148,17 +160,7 @@ const updateBook = (req, res) => {
         return;
       }
 
-      const {
-        name,
-        year,
-        author,
-        summary,
-        publisher,
-        pageCount,
-        readPage,
-        reading,
-      } = JSON.parse(body);
-
+      // Check if name is provided
       if (!name) {
         res.writeHead(400, {
           "Content-Type": "application/json; charset=utf-8",
@@ -172,6 +174,7 @@ const updateBook = (req, res) => {
         return;
       }
 
+      // Check if readPage is not greater than pageCount
       if (readPage > pageCount) {
         res.writeHead(400, {
           "Content-Type": "application/json; charset=utf-8",
@@ -198,8 +201,8 @@ const updateBook = (req, res) => {
         publisher,
         pageCount,
         readPage,
-        reading,
         finished,
+        reading,
         updatedAt,
       };
 
@@ -211,13 +214,11 @@ const updateBook = (req, res) => {
         })
       );
     } catch (err) {
-      res.writeHead(400, {
-        "Content-Type": "application/json; charset=utf-8",
-      });
+      res.writeHead(400, { "Content-Type": "application/json; charset=utf-8" });
       res.end(
         JSON.stringify({
-          status: "error",
-          message: "Data yang dikirim tidak valid",
+          status: "fail",
+          message: "Gagal memperbarui buku",
         })
       );
     }
